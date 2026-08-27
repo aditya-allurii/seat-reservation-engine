@@ -1,102 +1,46 @@
 # 🎟️ Seat Reservation Engine
 
-Short project description
+A backend seat reservation system built with **Java and Spring Boot**.
 
-## 🏗️ Architecture
+The system is designed to handle **concurrent seat reservations safely** while providing authentication, temporary seat holds, idempotent requests, reservation expiration, and Stripe payment integration.
 
-        Client
-          │
-          ▼
-    ┌─────────────┐
-    │ Controller  │
-    └──────┬──────┘
-           ▼
-    ┌─────────────┐
-    │   Service   │
-    └──────┬──────┘
-           │
-     ┌─────┴──────┐
-     ▼            ▼
- Repository     Stripe
-     │            │
-     ▼            ▼
-   MySQL       Webhook
+---
 
-## 🔄 Reservation Flow
+## 🏗️ System Architecture
 
-AVAILABLE
-    ↓
-  HELD
-    ↓
-Payment
-  ↙   ↘
-Success Timeout
- ↓       ↓
-BOOKED  EXPIRED
-          ↓
-      AVAILABLE
-
-## ✨ Features
-
-- JWT authentication
-- Seat reservation
-- Pessimistic locking
-- Idempotency
-- Reservation expiration
-- Ownership validation
-- Stripe PaymentIntent
-- Stripe webhooks
-- DTOs and mappers
-- Global exception handling
-
-## 🛠️ Tech Stack
-
-Java
-Spring Boot
-Spring Data JPA / Hibernate
-Spring Security
-JWT
-MySQL
-Stripe
-Maven
-
-## 📡 API Endpoints
-
-Authentication
-...
-
-Seats
-...
-
-Payments
-...
-
-## 🗄️ Database Design
-
-User
- ↓
-Reservation
- ↓
-Seat
-
-Reservation
- ↓
-Payment
-
-## 🚀 Running Locally
-
-...
-
-## 🔐 Environment Variables
-
-DB_PASSWORD
-STRIPE_SECRET_KEY
-STRIPE_WEBHOOK_SECRET
-JWT_SECRET
-
-## 🧪 Testing
-
-...
-
-## 👨‍💻 Author
-Aditya Alluri
+```text
+                    ┌──────────────┐
+                    │    Client    │
+                    │   / Postman  │
+                    └──────┬───────┘
+                           │
+                           ▼
+                  ┌─────────────────┐
+                  │ Spring Security │
+                  │   + JWT Filter  │
+                  └────────┬────────┘
+                           │
+                           ▼
+                  ┌─────────────────┐
+                  │   Controller    │
+                  │     Layer       │
+                  └────────┬────────┘
+                           │
+                           ▼
+                  ┌─────────────────┐
+                  │     Service     │
+                  │      Layer      │
+                  └──────┬─────┬────┘
+                         │     │
+                 ┌───────┘     └────────┐
+                 ▼                      ▼
+        ┌─────────────────┐     ┌──────────────┐
+        │   Repository    │     │    Stripe    │
+        │      Layer      │     │   Payments   │
+        └────────┬────────┘     └──────┬───────┘
+                 │                     │
+                 ▼                     ▼
+        ┌─────────────────┐     ┌──────────────┐
+        │      MySQL      │     │    Webhook   │
+        │    Database     │     │    Events    │
+        └─────────────────┘     └──────────────┘
