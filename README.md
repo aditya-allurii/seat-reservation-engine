@@ -107,7 +107,7 @@ Seat reservation requests require an Idempotency-Key.
 
 If the same request is accidentally retried, the system returns the previously stored response instead of creating another reservation.
 
-          Request 1
+        Request 1
    │
    ├── Idempotency-Key: ABC123
    ▼
